@@ -1,0 +1,274 @@
+<head>
+	
+  <title>story</title>
+  <script type="text/javascript" src="include/scrollTo.js"> </script>
+</head>
+
+<body>
+<div id="question">
+    <div id="questionbox">
+    	Start Topic
+        <hr/>
+        <input type="text" name="question" placeholder="enter ur ques"> <br/>
+        <input type="button" value="cancel"> <input id="start" type="button" value="Start Topic"> 
+    </div>
+ </div>
+ <div id="login">
+ 	 username : <input type="text" id="username"> </br>
+     password : <input type="password" id="password"> </br>
+     <input type="button" id="loginbutton" value="Login"> 
+     <input type="button"  value="Cancel" onClick="{$('#login').hide()}">
+     <input type="button" value="Sign Up" onClick="{$('#login').hide(); $('#signup').show()}">
+ </div>
+ <div id="signup">
+ 	 username : <input type="text" id="usernamesignup"> </br>
+     password : <input type="password" id="passwordsignup"> </br>
+     email : <input type="text" id="emailsignup"> </br>
+     <input type="button" id="signupbutton" value="Sign Up"> <input type="button"  value="Cancel" onClick="{$('#signup').hide()}"> 
+ </div>
+ <div style="z-index:10; position: absolute; height: 100%; width: 100%; display: none;"> 
+ 	<input type="file" id="source">
+    <input type="button" id="file">
+ </div>
+ <div id="main"> 
+ 	<div id="header">       		
+        	<li> Anonkun </li>
+            <li> Live Stories </li>
+            <li case="stories"> Stories </li>
+            <li case="forum"> Forums </li>
+            <li> About </li> 
+            <li id="account"> {{loginButtons}}  </li>
+            <li id="startanewstory" case="forum"> Start a new story </li>
+    </div>
+    <div id="content"> 
+    	{{> page}}
+    </div>
+ </div>
+  
+</body>
+
+<template name="page">
+	
+    {{#if current}}
+    	{{> forum}}
+   	{{/if}}
+    {{#if story}}
+    	{{> storyPage}}
+   	{{/if}}
+    {{#if new}}
+    	{{> newStory}}
+   	{{/if}}
+</template>
+
+<template name="newStory"> 
+	{{#each newStor}}    	
+        <div id="options"> {{> options}} </div>
+        <div id="story">{{> editStory}} </div>
+        <div id="chat"> {{> editchat}}</div>
+    {{/each}}
+</template>
+
+<template name="editStory"> 
+	<img src="{{thumb}}">
+        <br/>
+        <div id="content">
+        	
+        	<div id="wrapcontent">
+                {{#each chapter}}
+                    {{content}}
+                {{/each}}
+        	</div>
+            <div id="chapter"> 
+            	<input type="text" id="edit-title" value="{{title}}" style="width: 90%;">
+                <input type="text" id="edit-tag" value="{{tag}}" style="width: 90%;">
+            	Enter Chapter Name : <input id="chapter-name" type="text" name="chapter-name"> <br>
+                Enter Chapter Content : <textarea id="chapter-content" type="text" name="chapter-content" style="height: 100px; width: 55%;"> </textarea> <br>
+                <input type="button" value="Add">
+            </div>
+        </div>
+</template>
+
+<template name="storyPage">
+	{{#if currentStory}}
+    	{{> thisStory}}
+    {{else}} 
+		{{> stories}}
+    {{/if}}
+</template>
+<template name="forum"> 
+	<div id="forum-left"> 
+    	<input type="button" value="Start new Topic"> <br/>
+        topics <br/>
+        {{> question}}
+    </div>
+    <div id="forum-chat"> 
+    	{{> forumchat}}
+    </div>
+    <div id="forum-right"> 
+    	Share <br/>
+        Twitter <br/>
+        Facebook <br/>
+    </div>
+</template>
+
+<template name="question"> 
+	{{#each ques}}
+    	<dl> {{name}} </dl>
+    {{/each}}
+</template>
+
+<template name="forumchat"> 
+	<div id="forumchatwrapper"> 
+	<div id="chats"> 
+        {{#each chats}}
+            {{name}} : {{message}} <br/>
+        {{/each}}
+    </div>
+    </div>
+    <div> 
+    	<input type="text" palaceholder="enter your chat">
+    </div>
+</template>
+
+<template name="stories"> 
+	<br/>
+	<div id="category"> 
+    	<li> Boards </li>        
+    	{{> storiesCategory}}
+    </div>
+    <div id="storyContent"> 
+    	<div id="listStories">
+        	{{> storyList}} 
+        </div>
+        <div id="numberStories">
+        	{{> storyNumber}} 
+        </div>
+    </div>
+</template>
+
+<template name="storyList"> 
+	{{#each story}}
+    <li class="storyClass"> 
+        <a href="#" class="href"> 
+        	<img src="{{thumb}}"/> 
+        	<div class="storyShort"> 
+            	<h3> {{title}} </h3>
+                <p> {{tag}}... </p>
+                <div>
+                    by : {{author}} <br/>
+                    {{category}}
+                </div>
+            </div>
+            <div class="storyFooter"> Like ({{like}}) T ({{len}}) words</div> 
+        </a> 
+    </li>
+    {{/each}}
+</template>
+
+<template name="storyNumber"> 
+	{{#each number}}
+    	
+    	<li class="storyNum"> {{this.no}} </li>
+    {{/each}}
+</template>
+
+<template name="storiesCategory"> 
+	{{#each category}}
+    <li> {{name}} </li>
+    {{/each}}
+</template>
+
+<template name="account"> 
+	<font>
+	{{#if username}}
+    	{{> username}}
+    {{else}}
+    	Login
+    {{/if}}
+    </font>
+</template>
+
+<template name="username"> 
+	{{#each user}}
+    	{{name}}
+    {{/each}}
+</template>
+
+<template name="thisStory"> 
+	{{#each store}}
+        <div id="options"> {{> options}} </div>
+        <div id="story">{{> currentStory}} </div>
+        <div id="chat"> {{> chat}}</div>
+    {{/each}}
+</template>
+
+<template name="currentStory"> 
+	
+        <img src="{{thumb}}">
+        <br/>
+        <div id="content">
+        	<div id="wrapcontent">
+                {{#each chapter}}
+                    {{{content}}}
+                {{/each}}
+        	</div>
+        </div>
+</template>
+
+<template name="options"> 
+	{{> chapter}}
+	<dl> Focus </dl> 
+    <dl id="like"> Like ({{like}}) </dl> 
+    <dl> Subscribe </dl> 
+    <dl> Darken Background </dl>
+    <dl> Facebook </dl> 
+    <dl> Twitter </dl>    
+</template>
+<template name="chapter"> 
+	{{#each chapters}}
+    <dl> {{name}} </dl>
+    {{/each}}
+</template>
+<template name="chat"> 
+	Story is offline. <br/>
+     <div id="information"> 
+    	{{author}} <br/>
+        {{date}} <br/>
+        {{category}} 
+    </div>
+    Open Activities 
+    <div id="chatbox"> {{> chatbox}} </div>
+</template>
+
+<template name="editchat"> 
+	Story is offline. <br/>
+    {{> information}}
+    Open Activities 
+    <div id="chatbox"> {{> chatbox}} </div>
+</template>
+
+<template name="information"> 
+	 <div id="information"> 
+    	{{author}} <br/>
+        {{date}} <br/>
+        <input type="text" value="{{category}}"> 
+    </div>
+</template>
+
+<template name="chatbox">
+	<div id="chatwrapper"> 
+	<div id="chats"> 
+        {{#each chats}}
+            {{name}} : {{message}} <br/>
+        {{/each}}
+    </div>
+    </div>
+    <div> 
+    	<input type="text" palaceholder="enter your chat">
+    </div>
+</template>
+
+
+
+
+
